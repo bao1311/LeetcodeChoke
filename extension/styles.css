@@ -1,0 +1,137 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* .chat-window {
+    overflow-y: auto;
+  } */
+
+.chat-container {
+    width: 100%;
+    height: 100%;
+    background: #262626;
+    border: 1px solid #606060;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-window {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    border-bottom: 1px solid #262626;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #262626;
+    color: white;
+    background-color: #3c3c3c;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    border-radius: 10px;
+}
+
+.chat-input input:hover{
+    border: 1px solid #007bff;
+}
+
+.chat-input input:focus{
+    border: 1px solid #007bff;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: #4fae40;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.chat-input button:hover {
+    background: #4fbd3e;
+}
+
+/* .user {
+text-align: right;
+background-color: #3c3c3c;
+
+color: #007bff;
+}
+
+.bot {
+text-align: left;
+color: #333;
+} */
+
+.message {
+    display: flex;
+    margin: 10px 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    font-size: 15px;
+}
+
+.user .bubble {
+    background-color: #4fae40;
+    color: white;
+    border-bottom-right-radius: 5px;
+    /* margin-left: 200px; */
+}
+
+.bot .bubble {
+    background-color: #e9e9eb;
+    color: #333;
+    border-bottom-left-radius: 5px;
+}
+
+.spoiler {
+    background-color: #e9e9eb;
+    border-radius: 4px;
+    cursor: pointer;
+    filter: blur(5px);
+    transition: filter 0.3s ease, color 0.3s ease;
+    user-select: none;
+}
+  
+/* Revealed on click */
+.spoiler.revealed {
+    color: inherit;
+    filter: none;
+}

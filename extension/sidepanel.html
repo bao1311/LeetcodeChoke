@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>LeetFocus Side Panel</title>
-  <style>
-    body { font-family: sans-serif; padding: 10px; width: 250px; }
-    #status { margin-top: 10px; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chatbox</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h3>🧠 LeetFocus</h3>
-  <p>Stay on task!</p>
-  <button id="start-timer">Start 25m Focus</button>
-  <div id="status">Ready</div>
-
-  <script src="sidepanel.js"></script>
+  <div class="chat-container">
+    <div class="chat-window" id="chat-window">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type a message..." />
+      <button id="sendBtn">send</button>
+      <script src="sidepanel.js"></script>
+    </div>
+  </div>
 </body>
 </html>
