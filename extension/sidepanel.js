@@ -4,13 +4,41 @@ function sendMessage() {
   if (!message) return;
 
   addMessage("user", message);
-
+  fetchBot(message)
   // Simulate bot reply
-  setTimeout(() => {
-    addMessage("bot", "This is a [spoiler]placeholder[/spoiler] reply from the bot!");
-  }, 500);
+  // setTimeout(() => {
+  //   addMessage(
+  //     "bot",
+  //     reply
+  //   );
+  // }, 500);
 
   input.value = "";
+}
+
+function fetchBot(message) {
+  // Simulate API call
+  fetch("https://127.0.0.1:8000/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message: message }), // Sending the user's message
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Assuming the API response has a `reply` field
+      addMessage("bot", data.reply);
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+      addMessage("bot", "Sorry, something went wrong.");
+    });
 }
 
 // function addMessage(sender, text) {
@@ -24,14 +52,14 @@ function sendMessage() {
 
 // function addMessage(sender, text) {
 //     const chatWindow = document.getElementById("chat-window");
-  
+
 //     const messageWrapper = document.createElement("div");
 //     messageWrapper.classList.add("message", sender);
-  
+
 //     const bubble = document.createElement("div");
 //     bubble.classList.add("bubble");
 //     bubble.textContent = text;
-  
+
 //     messageWrapper.appendChild(bubble);
 //     chatWindow.appendChild(messageWrapper);
 //     chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -40,48 +68,50 @@ function sendMessage() {
 document.body.classList.add("no-scroll"); // to disable scrolling
 
 function addMessage(sender, text) {
-    const chatWindow = document.getElementById("chat-window");
-  
-    const messageWrapper = document.createElement("div");
-    messageWrapper.classList.add("message", sender);
-  
-    const bubble = document.createElement("div");
-    bubble.classList.add("bubble");
+  const chatWindow = document.getElementById("chat-window");
 
+  const messageWrapper = document.createElement("div");
+  messageWrapper.classList.add("message", sender);
 
-    // Convert [spoiler]text[/spoiler] to span
-    const safeText = text.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler">$1</span>');
-    bubble.innerHTML = safeText;
-  
-    // // Allow rendering HTML like spoiler spans
-    // bubble.innerHTML = text;
-  
-    // Attach click event to spoiler spans
-    bubble.querySelectorAll(".spoiler").forEach(spoiler => {
-      spoiler.addEventListener("click", () => {
-        spoiler.classList.toggle("revealed");
-      });
-    });
-  
-    messageWrapper.appendChild(bubble);
-    chatWindow.appendChild(messageWrapper);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  }  
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
 
-document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("userInput");
-    const sendBtn = document.getElementById("sendBtn");
-  
-    // Event listener for Enter key
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        sendMessage();
-      }
-    });
-  
-    // Event listener for Send button click
-    sendBtn.addEventListener("click", () => {
-      sendMessage();
+  // Convert [spoiler]text[/spoiler] to span
+  const safeText = text.replace(
+    /\[spoiler\](.*?)\[\/spoiler\]/g,
+    '<span class="spoiler">$1</span>'
+  );
+  bubble.innerHTML = safeText;
+
+  // // Allow rendering HTML like spoiler spans
+  // bubble.innerHTML = text;
+
+  // Attach click event to spoiler spans
+  bubble.querySelectorAll(".spoiler").forEach((spoiler) => {
+    spoiler.addEventListener("click", () => {
+      spoiler.classList.toggle("revealed");
     });
   });
+
+  messageWrapper.appendChild(bubble);
+  chatWindow.appendChild(messageWrapper);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("userInput");
+  const sendBtn = document.getElementById("sendBtn");
+
+  // Event listener for Enter key
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Event listener for Send button click
+  sendBtn.addEventListener("click", () => {
+    sendMessage();
+  });
+});
