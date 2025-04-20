@@ -34,8 +34,9 @@ function sendMessage() {
   const input = document.getElementById("userInput");
   const message = input.value.trim();
   if (!message) return;
-  messages.push({role: "user", content: message})
+  messages.push({role: "user", content: message + "\n It has been ${seconds} since we start working together"})
   addMessage("user", message);
+  
   fetchBot(message);
   // Simulate bot reply
   // setTimeout(() => {
@@ -202,10 +203,17 @@ if (!username) {
 
 // Show welcome message in chat
 
+let seconds = 0;
+
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     addMessage("bot", `Welcome, ${username}!`, "system");
   }, 500);
+
+  setInterval(() => {
+    seconds++;
+    //console.log("Its been " + seconds + " seconds since we started");
+  }, 1000);
 });
 
 // window.addEventListener('load', function() {
