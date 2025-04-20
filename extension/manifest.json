@@ -3,7 +3,8 @@
     "name": "LeetcodeChoke",
     "version": "1.0",
     "description": "Stay focused while solving LeetCode with help from AI agent!",
-    "permissions": ["sidePanel"],
+    "permissions": ["sidePanel", "activeTab", "scripting"],
+    "host_permissions": ["https://leetcode.com/*"],
     "background": {
       "service_worker": "background.js"
     },
@@ -12,6 +13,13 @@
     },
     "side_panel": {
         "default_path": "sidepanel.html"
-    }
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://leetcode.com/problems/*"],
+        "js": ["content.js"],
+        "run_at": "document_idle"
+      }
+    ]
   }
   

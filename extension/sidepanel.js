@@ -122,7 +122,7 @@ function addMessage(sender, text) {
   bubble.classList.add("bubble");
 
   // Optional: Handle [spoiler] tags first
-  const withSpoilers = text.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler">$1</span>');
+ const withSpoilers = text;//.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler">$1</span>');
 
   // Convert markdown to HTML
   // const html = marked.parse(withSpoilers);
@@ -175,3 +175,129 @@ window.addEventListener("DOMContentLoaded", () => {
     addMessage("bot", `Welcome, ${username}!`, "system");
   }, 500);
 });
+
+// window.addEventListener('load', function() {
+//   // Step 1: Extract the problem slug from the URL
+//   const url = window.location.href; // Get the current page URL
+//   const titleSlug = url.split('/').pop(); // Extract the part after /problems/
+  
+//   console.log("Problem Slug:", titleSlug);
+
+// fetch("https://leetcode.com/graphql", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     query: `
+//       query getQuestionDetail($titleSlug: String!) {
+//         question(titleSlug: $titleSlug) {
+//           title
+//           content
+//           difficulty
+//           likes
+//           dislikes
+//           topicTags {
+//             name
+//           }
+//         }
+//       }
+//     `,
+//     // variables: {
+//     //   titleSlug: "last-day-where-you-can-still-cross",
+//     // },
+//   }),
+// })
+//   .then((res) => res.json())
+//   .then((data) => {
+//     const q = data.data.question;
+//     console.log("Title:", q.title);
+//     console.log("Difficulty:", q.difficulty);
+//     console.log("Tags:", q.topicTags.map((tag) => tag.name).join(", "));
+//     // document.body.innerHTML = q.content; // contains full HTML-formatted problem description
+// });
+// });
+
+
+// fetch("https://leetcode.com/graphql", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     query: `
+//       query getQuestionDetail($titleSlug: String!) {
+//         question(titleSlug: $titleSlug) {
+//           title
+//           content
+//           difficulty
+//           likes
+//           dislikes
+//           topicTags {
+//             name
+//           }
+//         }
+//       }
+//     `,
+//     variables: {
+//       titleSlug: "last-day-where-you-can-still-cross",
+//     },
+//   }),
+// })
+//   .then((res) => res.json())
+//   .then((data) => {
+//     const q = data.data.question;
+//     console.log("Title:", q.title);
+//     console.log("Difficulty:", q.difficulty);
+//     console.log("Tags:", q.topicTags.map((tag) => tag.name).join(", "));
+//     // document.body.innerHTML = q.content; // contains full HTML-formatted problem description
+// });
+
+function injectContentScript(tabId, url) {
+  if (url && url.includes('https://leetcode.com/problems/')) {
+    chrome.scripting.executeScript({
+      target: { tabId },
+      files: ['content.js']
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const activeTab = tabs[0];
+    if (activeTab.url && activeTab.url.includes('https://leetcode.com/problems/')) {
+      chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        files: ['content.js']
+      });
+    }
+  });
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete') {
+    injectContentScript(tabId, tab.url);
+  }
+});
+
+// Fires when the user switches tabs
+chrome.tabs.onActivated.addListener(activeInfo => {
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+    if (tab.status === 'complete') {
+      injectContentScript(tab.id, tab.url);
+    }
+  });
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "leetcode-problem") {
+    const { title, contentHTML, difficulty } = message;
+
+    addMessage("bot", title);
+    addMessage("bot", contentHTML);
+    addMessage("bot", difficulty);
+
+    console.log("aaaaa");
+  }
+});
+
