@@ -163,10 +163,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const username = sessionStorage.getItem("username");
 
+// Redirect if not logged in
 if (!username) {
-  // No user? Redirect to login
   window.location.href = "login.html";
-} else {
-  // Show user's name
-  document.getElementById("user-display").textContent = username;
 }
+
+// Show welcome message in chat
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    addMessage("bot", `Welcome, ${username}!`, "system");
+  }, 500);
+});

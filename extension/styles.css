@@ -1,3 +1,15 @@
+#header {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    color: white;
+    font-size: x-large;
+    word-wrap: break-word;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    background-color: #262626;
+}
+
+
 body {
     margin: 0;
     padding: 0;
