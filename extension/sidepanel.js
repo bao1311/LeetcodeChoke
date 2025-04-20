@@ -1,4 +1,35 @@
-const messages = [];
+var startRating = 1100
+const messages = [{role: "user", content: "My current rating is ${startRating}"}];
+function retrieveQuestion()
+{
+  const bodyRequest = {
+    min_rating: 1100,
+    max_rating: 1200
+  };
+  const url = `http://127.0.0.1:8000/problems?min_rating=${startRating}&max_rating=${startRating+100}`
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Assuming the API response has a `reply` field
+      console.log(data);
+      messages.push({role: "assistant", content: data.reply})
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+      addMessage("bot", "Sorry, something went wrong.");
+    });
+
+}
 function sendMessage() {
   const input = document.getElementById("userInput");
   const message = input.value.trim();
@@ -157,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event listener for Send button click
   sendBtn.addEventListener("click", () => {
+    // retrieveQuestion();
     sendMessage();
   });
 });
