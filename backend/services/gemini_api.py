@@ -10,7 +10,7 @@ from google.genai.types import Content, Part, GenerateContentConfig
 from fastapi import FastAPI
 from models import ChatRequest
 # from openai_client import get_chatgpt_response
-from deepseek_api import get_deepseek_reply
+# from deepseek_api import get_deepseek_reply
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 load_dotenv()
