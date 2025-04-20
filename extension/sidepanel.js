@@ -1,8 +1,9 @@
+const messages = [];
 function sendMessage() {
   const input = document.getElementById("userInput");
   const message = input.value.trim();
   if (!message) return;
-
+  messages.push({role: "user", content: message})
   addMessage("user", message);
   fetchBot(message);
   // Simulate bot reply
@@ -24,11 +25,10 @@ function sendMessage() {
 // }
 function fetchBot(message) {
   // Simulate API call
+  messages.push({role: "user", content: message})
 
   const chatRequest = {
-    messages: [
-      {role: "user", content: message}
-    ]
+    messages: messages 
   };
   fetch("http://127.0.0.1:8000/chat", {
     method: "POST",
@@ -46,6 +46,7 @@ function fetchBot(message) {
     .then((data) => {
       // Assuming the API response has a `reply` field
       console.log(data);
+      messages.push({role: "assistant", content: data.reply})
       addMessage("bot", data["reply"]);
     })
     .catch((error) => {
@@ -160,12 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-const username = sessionStorage.getItem("username");
+// const username = sessionStorage.getItem("username");
 
-if (!username) {
-  // No user? Redirect to login
-  window.location.href = "login.html";
-} else {
-  // Show user's name
-  document.getElementById("user-display").textContent = username;
-}
+// if (!username) {
+//   // No user? Redirect to login
+//   window.location.href = "login.html";
+// } else {
+//   // Show user's name
+//   document.getElementById("user-display").textContent = username;
+// }
