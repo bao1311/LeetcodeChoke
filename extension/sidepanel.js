@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// const username = sessionStorage.getItem("username");
+const username = sessionStorage.getItem("username");
 
 // Redirect if not logged in
 if (!username) {
