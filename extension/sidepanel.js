@@ -45,6 +45,7 @@ function fetchBot(message) {
     })
     .then((data) => {
       // Assuming the API response has a `reply` field
+      console.log(data);
       result = processJSON(JSON.parse(data.reply))
       addMessage("bot", result);
     })
@@ -80,6 +81,37 @@ function fetchBot(message) {
 
 document.body.classList.add("no-scroll"); // to disable scrolling
 
+// function addMessage(sender, text) {
+//   const chatWindow = document.getElementById("chat-window");
+
+//   const messageWrapper = document.createElement("div");
+//   messageWrapper.classList.add("message", sender);
+
+//   const bubble = document.createElement("div");
+//   bubble.classList.add("bubble");
+
+//   // Convert [spoiler]text[/spoiler] to span
+//   const safeText = text.replace(
+//     /\[spoiler\](.*?)\[\/spoiler\]/g,
+//     '<span class="spoiler">$1</span>'
+//   );
+//   bubble.innerHTML = safeText;
+
+//   // // Allow rendering HTML like spoiler spans
+//   // bubble.innerHTML = text;
+
+//   // Attach click event to spoiler spans
+//   bubble.querySelectorAll(".spoiler").forEach((spoiler) => {
+//     spoiler.addEventListener("click", () => {
+//       spoiler.classList.toggle("revealed");
+//     });
+//   });
+
+//   messageWrapper.appendChild(bubble);
+//   chatWindow.appendChild(messageWrapper);
+//   chatWindow.scrollTop = chatWindow.scrollHeight;
+// }
+
 function addMessage(sender, text) {
   const chatWindow = document.getElementById("chat-window");
 
@@ -89,18 +121,17 @@ function addMessage(sender, text) {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
 
-  // Convert [spoiler]text[/spoiler] to span
-  const safeText = text.replace(
-    /\[spoiler\](.*?)\[\/spoiler\]/g,
-    '<span class="spoiler">$1</span>'
-  );
-  bubble.innerHTML = safeText;
+  // Optional: Handle [spoiler] tags first
+  const withSpoilers = text.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler">$1</span>');
 
-  // // Allow rendering HTML like spoiler spans
-  // bubble.innerHTML = text;
+  // Convert markdown to HTML
+  const html = marked.parse(withSpoilers);
+  // html = withSpoilers;
 
-  // Attach click event to spoiler spans
-  bubble.querySelectorAll(".spoiler").forEach((spoiler) => {
+  bubble.innerHTML = html;
+
+  // Click to reveal spoilers
+  bubble.querySelectorAll(".spoiler").forEach(spoiler => {
     spoiler.addEventListener("click", () => {
       spoiler.classList.toggle("revealed");
     });
@@ -110,6 +141,7 @@ function addMessage(sender, text) {
   chatWindow.appendChild(messageWrapper);
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("userInput");
@@ -128,3 +160,13 @@ document.addEventListener("DOMContentLoaded", () => {
     sendMessage();
   });
 });
+
+const username = sessionStorage.getItem("username");
+
+if (!username) {
+  // No user? Redirect to login
+  window.location.href = "login.html";
+} else {
+  // Show user's name
+  document.getElementById("user-display").textContent = username;
+}

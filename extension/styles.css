@@ -135,3 +135,37 @@ color: #333;
     color: inherit;
     filter: none;
 }
+
+/* Remove spacing from block-level markdown elements in bubbles */
+/* .bubble p,
+.bubble h1,
+.bubble h2,
+.bubble h3,
+.bubble ul,
+.bubble ol,
+.bubble blockquote {
+  margin: 0;
+  padding: 0;
+} */
+
+/* Make sure line breaks still work if needed */
+/* .bubble br {
+  display: inline;
+} */
+
+/* Optional: handle lists gracefully */
+/* .bubble ul,
+.bubble ol {
+  list-style: none;
+  padding-left: 0;
+} */
+
+.bubble p:first-of-type{
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.bubble p:last-of-type{
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
