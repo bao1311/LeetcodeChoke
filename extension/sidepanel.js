@@ -56,7 +56,7 @@ function sendMessage() {
 // }
 function fetchBot(message) {
   // Simulate API call
-  messages.push({role: "user", content: message})
+  // messages.push({role: "user", content: message})
 
   const chatRequest = {
     messages: messages 
@@ -324,7 +324,8 @@ chrome.tabs.onActivated.addListener(activeInfo => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "leetcode-problem") {
     const { title, contentHTML, difficulty } = message;
-
+    messages.push({role: 'user', content: contentHTML});
+    console.log(contentHTML)
     addMessage("bot", title);
     addMessage("bot", contentHTML);
     addMessage("bot", difficulty);
