@@ -125,10 +125,10 @@ function addMessage(sender, text) {
   const withSpoilers = text.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler">$1</span>');
 
   // Convert markdown to HTML
-  const html = marked.parse(withSpoilers);
+  // const html = marked.parse(withSpoilers);
   // html = withSpoilers;
 
-  bubble.innerHTML = html;
+  bubble.innerHTML = withSpoilers;
 
   // Click to reveal spoilers
   bubble.querySelectorAll(".spoiler").forEach(spoiler => {
