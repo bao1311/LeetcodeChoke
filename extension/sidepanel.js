@@ -1,8 +1,9 @@
+const messages = [];
 function sendMessage() {
   const input = document.getElementById("userInput");
   const message = input.value.trim();
   if (!message) return;
-
+  messages.push({role: "user", content: message})
   addMessage("user", message);
   fetchBot(message);
   // Simulate bot reply
@@ -15,20 +16,19 @@ function sendMessage() {
 
   input.value = "";
 }
-function processJSON(jsonData)
-{
-  console.log(jsonData)
-  const content = jsonData.choices[0].message.content
+// function processJSON(jsonData)
+// {
+//   console.log(jsonData)
+//   const content = jsonData.choices[0].message.content
 
-  return content
-}
+//   return content
+// }
 function fetchBot(message) {
   // Simulate API call
+  messages.push({role: "user", content: message})
 
   const chatRequest = {
-    messages: [
-      {role: "user", content: message}
-    ]
+    messages: messages 
   };
   fetch("http://127.0.0.1:8000/chat", {
     method: "POST",
@@ -46,8 +46,8 @@ function fetchBot(message) {
     .then((data) => {
       // Assuming the API response has a `reply` field
       console.log(data);
-      result = processJSON(JSON.parse(data.reply))
-      addMessage("bot", result);
+      messages.push({role: "assistant", content: data.reply})
+      addMessage("bot", data["reply"]);
     })
     .catch((error) => {
       console.error("There was a problem with the fetch operation:", error);
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-const username = sessionStorage.getItem("username");
+// const username = sessionStorage.getItem("username");
 
 // Redirect if not logged in
 if (!username) {
