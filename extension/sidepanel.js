@@ -4,7 +4,7 @@ function sendMessage() {
   if (!message) return;
 
   addMessage("user", message);
-  fetchBot(message)
+  fetchBot(message);
   // Simulate bot reply
   // setTimeout(() => {
   //   addMessage(
@@ -15,15 +15,27 @@ function sendMessage() {
 
   input.value = "";
 }
+function processJSON(jsonData)
+{
+  console.log(jsonData)
+  const content = jsonData.choices[0].message.content
 
+  return content
+}
 function fetchBot(message) {
   // Simulate API call
-  fetch("https://127.0.0.1:8000/chat", {
+
+  const chatRequest = {
+    messages: [
+      {role: "user", content: message}
+    ]
+  };
+  fetch("http://127.0.0.1:8000/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ message: message }), // Sending the user's message
+    body: JSON.stringify(chatRequest), // Sending the user's message
   })
     .then((response) => {
       if (!response.ok) {
@@ -33,7 +45,8 @@ function fetchBot(message) {
     })
     .then((data) => {
       // Assuming the API response has a `reply` field
-      addMessage("bot", data.reply);
+      result = processJSON(JSON.parse(data.reply))
+      addMessage("bot", result);
     })
     .catch((error) => {
       console.error("There was a problem with the fetch operation:", error);
