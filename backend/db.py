@@ -11,7 +11,7 @@ load_dotenv()
 # Database URL, fallback to local default
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+asyncpg://leetuser:secret123@localhost:5432/leetcode"
+    "postgresql+asyncpg://leetuser:1311@localhost:5432/leetcode"
 )
 
 # 1️⃣ Create the async SQLAlchemy engine
