@@ -1,32 +1,25 @@
-import requests
-import json
+from google import genai
+from google.genai.types import GenerateContentConfig
 
-response = requests.post(
-  url="https://openrouter.ai/api/v1/chat/completions",
-  headers={
-    "Authorization": "Bearer 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",
-    "Content-Type": "application/json",
-  },
-  data=json.dumps({
-    "model": "deepseek/deepseek-chat-v3-0324:free",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Can you explain how to solve two-sum problem for?"
-      }
-    ],
-    
-  })
+# 1️⃣ Create your client
+client = genai.Client(api_key="AIzaSyBeTl4HCRIpDHAQjH9oa_8m-o9ljl76BNo")
 
+# 2️⃣ Define your system instructions
+system_instr = [
+    "You are a concise, helpful assistant.",
+    "Use Markdown formatting for code snippets."
+]
+
+# 3️⃣ Start a chat session with those instructions
+chat = client.chats.create(
+    model="gemini-2.0-flash-001",
+    config=GenerateContentConfig(system_instruction=system_instr)
 )
 
-# Print raw response if debugging
-print("Status:", response.status_code)
-print("Raw:", response.text)
+# 4️⃣ Send your first user message
+resp = chat.send_message("Hi Gemini! Can you give me a quick Python example for reading a CSV?")
+print(resp.text)
 
-# Parse and print actual AI reply
-if response.status_code == 200:
-    reply = response.json()["choices"][0]["message"]["content"]
-    print("AI says:", reply)
-else:
-    print("Error:", response.json())
+# 5️⃣ Continue the conversation seamlessly
+resp = chat.send_message("Now show me how to filter rows where `age > 30`.")
+print(resp.text)

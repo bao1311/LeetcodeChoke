@@ -7,7 +7,6 @@ from typing import List
 load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 print("OPENROUTER_API_KEY")
-OPENROUTER_API_KEY = "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"
 
 def get_deepseek_reply(messages: List) -> str:
     response = requests.post(

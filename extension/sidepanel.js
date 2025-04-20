@@ -15,13 +15,13 @@ function sendMessage() {
 
   input.value = "";
 }
-function processJSON(jsonData)
-{
-  console.log(jsonData)
-  const content = jsonData.choices[0].message.content
+// function processJSON(jsonData)
+// {
+//   console.log(jsonData)
+//   const content = jsonData.choices[0].message.content
 
-  return content
-}
+//   return content
+// }
 function fetchBot(message) {
   // Simulate API call
 
@@ -46,8 +46,7 @@ function fetchBot(message) {
     .then((data) => {
       // Assuming the API response has a `reply` field
       console.log(data);
-      result = processJSON(JSON.parse(data.reply))
-      addMessage("bot", result);
+      addMessage("bot", data["reply"]);
     })
     .catch((error) => {
       console.error("There was a problem with the fetch operation:", error);
